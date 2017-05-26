@@ -28,10 +28,7 @@ app.post('/', upload.single('thumb'), function(req, res, next) {
 	else if(['media.play', 'media.resume'].indexOf(payload.event) !== -1 && payload.Metadata.cinemaTrailer) {
 		scene = 'trailer';
 	}
-	else if(payload.event === 'media.pause') {
-		scene = 'trailer';
-	}
-	else if(payload.event === 'media.stop') {
+	else if(payload.event === 'media.pause' || payload.event === 'media.stop') {
 		scene = 'home';
 	}
 	else {
