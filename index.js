@@ -9,6 +9,8 @@ const express = require('express'),
 app.post('/', upload.single('thumb'), function(req, res, next) {
 	let payload = JSON.parse(req.body.payload),
 		scene = null;
+
+	res.send(201);
 	
 	// check player
 	if(
