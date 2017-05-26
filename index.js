@@ -1,5 +1,4 @@
 const express = require('express'), 
-      request = require('request'), 
       multer  = require('multer'),
       request = require('request')
 
