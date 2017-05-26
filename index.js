@@ -1,58 +1,51 @@
 const express = require('express'), 
       request = require('request'), 
       multer  = require('multer'),
-      Pushover = require('pushover-notifications')
+      request = require('request')
 
       upload = multer({ dest: '/tmp/' }),
-      app = express(),
-
-      p = new Pushover( {
-		user: process.env['PUSHOVER_USER'],
-		token: process.env['PUSHOVER_TOKEN'],
-	  }),
-
-	  emojis = {
-	  	"media.play": "▶️",
-	  	"media.pause": "⏸",
-	  	"media.resume": "⏯",
-	  	"media.stop": "⏹"
-	  };
+      app = express();
 
 
 app.post('/', upload.single('thumb'), function(req, res, next) {
 	let payload = JSON.parse(req.body.payload),
-		msg = {};
-
-	if(!emojis[ payload.event ]) {
-		return res.send(201);
+		scene = null;
+	
+	// check player
+	if(
+		!payload.owner ||
+		!payload.Player || 
+		!payload.Player.local || 
+		payload.Player.title.indexOf('Apple TV') === -1
+	) {
+		return;
 	}
 
-
-	msg.title = emojis[ payload.event ] + " " + payload.Account.title;
-
-	// Movies
-	if(payload.Metadata.librarySectionID === 1) {
-		msg.message = payload.Metadata.title;
+	if(['media.play', 'media.resume'].indexOf(payload.event) !== -1 && [1, 2].indexOf(payload.Metadata.librarySectionID) !== -1) {
+		scene = 'movie';
+	}
+	else if(['media.play', 'media.resume'].indexOf(payload.event) !== -1 && payload.Metadata.cinemaTrailer) {
+		scene = 'trailer';
+	}
+	else if(payload.event === 'media.pause') {
+		scene = 'trailer';
+	}
+	else if(payload.event === 'media.stop') {
+		scene = 'home';
+	}
+	else {
+		return;
 	}
 
-	// TV Shows
-	else if(payload.Metadata.librarySectionID === 2) {
-		msg.message = payload.Metadata.grandparentTitle + 
-						" S" + (payload.Metadata.parentIndex < 10 ? "0" : "") + payload.Metadata.parentIndex + 
-						"E" + payload.Metadata.index;
-	}
-
-	msg.url = "https://app.plex.tv/web/app#!/server/" + 
-				payload.Server.uuid + "/details/" + 
-				encodeURIComponent(payload.Metadata.key);
-	msg.url_title = "View details";
-
-	p.send( msg, function(err, result) {
-		if( err ) {
-			res.status(500).send(err);
+	request({
+		uri: 'https://home.sebbo.net/fhem?cmd.setScene=set%20sebbo_LS%20scene%20' + scene + '&XHR=1'
+	}, function(error, httpResponse, body) {
+		if(error) {
+			console.log(error);
 		}
-
-		res.sendStatus(201);
+		if(body) {
+			console.log(body);
+		}
 	});
 });
 

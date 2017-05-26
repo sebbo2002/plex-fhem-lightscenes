@@ -4,7 +4,7 @@ build_image:
   - docker:dind
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN docker.sebbo.net
-    - docker build -t docker.sebbo.net/sebbo2002/docker-plex-notifications/image .
-    - docker push docker.sebbo.net/sebbo2002/docker-plex-notifications/image:latest
+    - docker build -t docker.sebbo.net/sebbo2002/docker-plex-fhem/image .
+    - docker push docker.sebbo.net/sebbo2002/docker-plex-fhem/image:latest
   only:
     - master
