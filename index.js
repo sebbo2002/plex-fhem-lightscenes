@@ -38,7 +38,7 @@ app.post('/', upload.single('thumb'), function(req, res, next) {
 	}
 
 	request({
-		uri: 'https://home.sebbo.net/fhem?cmd.setScene=set%20sebbo_LS%20scene%20' + scene + '&XHR=1'
+		uri: process.env.URL + '/fhem?cmd.setScene=set%20' + process.env.LIGHTSCENE + '%20scene%20' + scene + '&XHR=1'
 	}, function(error, httpResponse, body) {
 		if(error) {
 			console.log(error);
