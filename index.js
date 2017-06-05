@@ -29,7 +29,7 @@ app.post('/', upload.single('thumb'), function(req, res, next) {
 		scene = 'trailer';
 	}
 	else if(payload.event === 'media.pause' || payload.event === 'media.stop') {
-		scene = 'home';
+		scene = 'endCredits';
 	}
 	else {
 		return;
