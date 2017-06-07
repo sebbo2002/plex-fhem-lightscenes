@@ -22,7 +22,7 @@ app.post('/', upload.single('thumb'), function(req, res, next) {
 		return;
 	}
 
-	if(['media.play', 'media.resume'].indexOf(payload.event) !== -1 && [1, 2].indexOf(payload.Metadata.librarySectionID) !== -1) {
+	if(['media.play', 'media.resume'].indexOf(payload.event) !== -1 && ['movie', 'show'].indexOf(payload.Metadata.librarySectionType) !== -1) {
 		scene = 'movie';
 	}
 	else if(['media.play', 'media.resume'].indexOf(payload.event) !== -1 && payload.Metadata.cinemaTrailer) {
