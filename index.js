@@ -5,12 +5,15 @@ const express = require('express'),
       upload = multer({ dest: '/tmp/' }),
       app = express();
 
+app.get('/ping', function(req, res) {
+	res.send('pong');
+});
 
 app.post('/', upload.single('thumb'), function(req, res, next) {
 	let payload = JSON.parse(req.body.payload),
 		scene = null;
 
-	res.send(201);
+	res.sendStatus(201);
 	
 	// check player
 	if(
