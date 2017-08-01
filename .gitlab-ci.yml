@@ -34,14 +34,14 @@ deployment:
     - docker stop "plex-fhem-lightscenes" || true
     - docker rm "plex-fhem-lightscenes" || true
     - docker create --restart "always" --name="plex-fhem-lightscenes" \
-        -p 127.0.0.1:10033:8888 \
-        -e URL="${URL}" \
-        -e LIGHTSCENE="${LIGHTSCENE}" \
-        -e SCENE_PLAY="movie" \
-        -e SCENE_PLAY_TRAILER="trailer" \
-        -e SCENE_PAUSE="trailer" \
-        -e SCENE_STOP="endCredits" \
-        docker.sebbo.net/sebbo2002/plex-fhem-lightscenes
+          -p 127.0.0.1:10033:8888 \
+          -e URL="${URL}" \
+          -e LIGHTSCENE="${LIGHTSCENE}" \
+          -e SCENE_PLAY="movie" \
+          -e SCENE_PLAY_TRAILER="trailer" \
+          -e SCENE_PAUSE="trailer" \
+          -e SCENE_STOP="endCredits" \
+          docker.sebbo.net/sebbo2002/plex-fhem-lightscenes
     - docker start plex-fhem-lightscenes
   only:
     - master
