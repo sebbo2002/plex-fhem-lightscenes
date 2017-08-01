@@ -23,6 +23,29 @@ publish_github:
     - git push "https://${GITHUB_AUTH}@github.com/sebbo2002/plex-fhem-lightscenes.git" --all
     - git push "https://${GITHUB_AUTH}@github.com/sebbo2002/plex-fhem-lightscenes.git" --tags
 
+deployment:
+  stage: deploy
+  tags:
+    - matt.sebbo.net
+    - ssh
+  script:
+    - docker login -u "gitlab-ci-token" -p "${CI_BUILD_TOKEN}" docker.sebbo.net
+    - docker pull docker.sebbo.net/sebbo2002/plex-fhem-lightscenes
+    - docker stop "plex-fhem-lightscenes" || true
+    - docker rm "plex-fhem-lightscenes" || true
+    - docker create --restart "always" --name="plex-fhem-lightscenes" \
+        -p 127.0.0.1:10033:8888 \
+        -e URL="${URL}" \
+        -e LIGHTSCENE="${LIGHTSCENE}" \
+        -e SCENE_PLAY="movie" \
+        -e SCENE_PLAY_TRAILER="trailer" \
+        -e SCENE_PAUSE="trailer" \
+        -e SCENE_STOP="endCredits" \
+        docker.sebbo.net/sebbo2002/plex-fhem-lightscenes
+    - docker start plex-fhem-lightscenes
+  only:
+    - master
+
 trigger_dockerhub:
   stage: deploy
   tags:
