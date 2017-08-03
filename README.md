@@ -1,6 +1,6 @@
 # plex-fhem-lightscenes
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Status](https://git-badges.sebbo.net/53/master/build)](https://git.sebbo.net/sebbo2002/gitlab-badges/pipelines)
+[![Status](https://git-badges.sebbo.net/53/master/build)](https://git.sebbo.net/sebbo2002/plex-fhem-lightscenes/pipelines)
 
 Triggered by Plex Webhooks, this Script will change the LightScene status…
 
