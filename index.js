@@ -9,6 +9,9 @@ if (!process.env.LIGHTSCENE) {
 	return cb(new Error('Unable to start: LIGHTSCENE empty'));
 }
 
+let currentScene = process.env.SCENE_STOP || 'home';
+let currentDelay;
+
 app.get('/ping', function(req, res) {
 	res.send('pong');
 });
@@ -48,16 +51,35 @@ app.post('/', upload.single('thumb'), function(req, res) {
 		return;
 	}
 
-	request({
-		uri: (process.env.URL || 'http://fhem') + '/fhem?cmd.setScene=set%20' + process.env.LIGHTSCENE + '%20scene%20' + scene + '&XHR=1'
-	}, function(error, httpResponse, body) {
-		if(error) {
-			console.log(error);
-		}
-		if(body) {
-			console.log(body);
-		}
-	});
+	if(scene === currentScene) {
+		return;
+	}
+
+	currentScene = scene;
+	if(currentDelay) {
+		clearTimeout(currentDelay);
+		currentDelay = null;
+	}
+
+	let delay = 0;
+	if(payload.Metadata.cinemaTrailer && ['media.pause', 'media.stop'].indexOf(payload.event) > -1) {
+		delay = 10000;
+	}
+
+	currentDelay = setTimeout(function() {
+		currentDelay = null;
+
+		request({
+			uri: (process.env.URL || 'http://fhem') + '/fhem?cmd.setScene=set%20' + process.env.LIGHTSCENE + '%20scene%20' + scene + '&XHR=1'
+		}, function(error, httpResponse, body) {
+			if(error) {
+				console.log(error);
+			}
+			if(body) {
+				console.log(body);
+			}
+		});
+	}, delay);
 });
 
 app.listen(process.env.PORT || 8888);
