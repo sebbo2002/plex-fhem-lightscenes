@@ -11,6 +11,7 @@ if (!process.env.LIGHTSCENE) {
 
 let currentScene = process.env.SCENE_STOP || 'home';
 let currentDelay;
+let wasTrailer;
 
 app.get('/ping', function(req, res) {
 	res.send('pong');
@@ -62,12 +63,13 @@ app.post('/', upload.single('thumb'), function(req, res) {
 	}
 
 	let delay = 0;
-	if(payload.Metadata.cinemaTrailer && ['media.pause', 'media.stop'].indexOf(payload.event) > -1) {
+	if(wasTrailer && ['media.pause', 'media.stop'].indexOf(payload.event) > -1) {
 		delay = 10000;
 	}
 
 	currentDelay = setTimeout(function() {
 		currentDelay = null;
+		wasTrailer = !!payload.Metadata.cinemaTrailer;
 
 		request({
 			uri: (process.env.URL || 'http://fhem') + '/fhem?cmd.setScene=set%20' + process.env.LIGHTSCENE + '%20scene%20' + scene + '&XHR=1'
