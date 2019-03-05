@@ -39,7 +39,7 @@ deployment:
         -e LIGHTSCENE="${LIGHTSCENE}"
         -e SCENE_PLAY="movie"
         -e SCENE_PLAY_TRAILER="trailer"
-        -e SCENE_PAUSE="trailer"
+        -e SCENE_PAUSE="pause"
         -e SCENE_STOP="endCredits"
         docker.sebbo.net/sebbo2002/plex-fhem-lightscenes
     - docker start plex-fhem-lightscenes
