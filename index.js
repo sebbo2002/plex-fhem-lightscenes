@@ -52,15 +52,11 @@ app.post('/', upload.single('thumb'), function(req, res) {
 		return;
 	}
 
-	console.log(1, scene);
-
 	if(scene === currentScene) {
 		return;
 	}
 
-    console.log(2, scene);
-
-	currentScene = scene;
+    currentScene = scene;
 	if(currentDelay) {
 		clearTimeout(currentDelay);
 		currentDelay = null;
