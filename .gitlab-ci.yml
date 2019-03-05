@@ -37,10 +37,10 @@ deployment:
         -p 127.0.0.1:10033:8888
         -e URL="${URL}"
         -e LIGHTSCENE="${LIGHTSCENE}"
-        -e SCENE_PLAY="movie"
+        -e SCENE_PLAY="play"
         -e SCENE_PLAY_TRAILER="trailer"
         -e SCENE_PAUSE="pause"
-        -e SCENE_STOP="endCredits"
+        -e SCENE_STOP="stop"
         docker.sebbo.net/sebbo2002/plex-fhem-lightscenes
     - docker start plex-fhem-lightscenes
   only:
