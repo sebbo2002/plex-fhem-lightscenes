@@ -28,7 +28,7 @@ app.post('/', upload.single('thumb'), function(req, res) {
 		!payload.owner ||
 		!payload.Player || 
 		!payload.Player.local || 
-		payload.Player.title.indexOf('Apple TV') === -1
+		payload.Player.title.indexOf(process.env.SCENE_PLAYER || 'Apple TV') === -1
 	) {
 		return;
 	}
@@ -52,9 +52,13 @@ app.post('/', upload.single('thumb'), function(req, res) {
 		return;
 	}
 
+	console.log(1, scene);
+
 	if(scene === currentScene) {
 		return;
 	}
+
+    console.log(2, scene);
 
 	currentScene = scene;
 	if(currentDelay) {

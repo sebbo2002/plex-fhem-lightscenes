@@ -41,6 +41,7 @@ deployment:
         -e SCENE_PLAY_TRAILER="trailer"
         -e SCENE_PAUSE="pause"
         -e SCENE_STOP="stop"
+        -e SCENE_PLAYER="Wohnzimmer"
         docker.sebbo.net/sebbo2002/plex-fhem-lightscenes
     - docker start plex-fhem-lightscenes
   only:
